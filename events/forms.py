@@ -1,5 +1,11 @@
 from django import forms
-from .models import Event, Tag
+from .models import Event, Tag, Location
+
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = ['city', 'street', 'building_number', 'floor']
 
 
 class EventForm(forms.ModelForm):
@@ -21,13 +27,13 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = ['title', 'description', 'date',
                   'location', 'category', 'tags']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'date': forms.DateTimeInput(attrs={'class': 'form-control'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-        }
+        # widgets = {
+        #     'title': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'description': forms.Textarea(attrs={'class': 'form-control'}),
+        #     'date': forms.DateTimeInput(attrs={'class': 'form-control'}),
+        #     'location': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'category': forms.Select(attrs={'class': 'form-control'}),
+        # }
 
     def clean(self):
         cleaned_data = super().clean()

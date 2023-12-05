@@ -22,7 +22,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('events')
+            return redirect('event_list')
     else:
         form = AuthenticationForm()
 
@@ -31,4 +31,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('events')
+    return redirect('event_list')

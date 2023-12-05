@@ -7,6 +7,8 @@ class Location(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     city = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
+    building_number = models.CharField(max_length=255)
+    floor = models.IntegerField(null=True)
 
     def __str__(self):
         return f"{self.city}, {self.country}"
@@ -26,7 +28,8 @@ class Event(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateTimeField()
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, related_name='events')
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='events_created')
     collaborators = models.ManyToManyField(
