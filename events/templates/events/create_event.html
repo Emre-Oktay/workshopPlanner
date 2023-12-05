@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Event{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Create Event</h2>
+    <form method="post" action="{% url 'create_event' %}" class="my-4">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">Event Title</label>
+            {{ form.title }}
+        </div>
+        <div class="form-group mb-3">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Event Description</label>
+            {{ form.description }}
+        </div>
+        <div class="form-group mb-3">
+            <label for="{{ form.date.id_for_label }}" class="form-label">Event Date</label>
+            {{ form.date }}
+        </div>
+        <div class="form-group mb-3">
+            <label for="{{ form.location.id_for_label }}" class="form-label">Event Location</label>
+            {{ form.location }}
+        </div>
+        <div class="form-group mb-3">
+            <label for="{{ form.category.id_for_label }}" class="form-label">Event Category</label>
+            {{ form.category }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label>
+            {{ form.tags }}
+            <small id="{{ form.tags.id_for_label }}_help" class="form-text text-muted">Choose from existing tags or
+                enter new ones separated by commas.</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.new_tags.id_for_label }}" class="form-label">New Tags</label>
+            {{ form.new_tags }}
+        </div>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+    </form>
+</div>
+{% endblock %}
