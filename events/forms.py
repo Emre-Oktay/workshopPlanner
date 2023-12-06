@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Tag, Location
+from .models import Event, Tag, Location, EventSessionItem
 
 
 class LocationForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class EventForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'date': forms.DateTimeInput(attrs={'class': 'form-control'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
@@ -63,3 +63,16 @@ class EventForm(forms.ModelForm):
         cleaned_data['tags'] = tags + new_tags_objs
 
         return cleaned_data
+
+
+class EventSessionForm(forms.ModelForm):
+    class Meta:
+        model = EventSessionItem
+        fields = ['start_time', 'end_time', 'title', 'description']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'start_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+            'end_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+        }

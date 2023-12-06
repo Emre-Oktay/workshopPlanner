@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="mb-4">{{ event.title }}</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Details</h5>
+                <p class="card-text"><strong>Description:</strong> {{ event.description }}</p>
+                <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
+                <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
+                <p class="card-text"><strong>Category:</strong> {{ event.category }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ event.status }}</p>
+
+                <h5 class="card-title mt-4">Tags</h5>
+                <ul class="list-inline">
+                    {% for tag in event.tags.all %}
+                    <li class="list-inline-item"><span class="badge badge-primary bg-secondary">{{ tag.name }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Check if the logged-in user is the creator of the event -->
+        {% if user.is_authenticated and user == event.creator %}
+        <a href="{% url 'create_session_item' event.id %}" class="btn btn-primary mt-4">Add Session</a>
+        {% endif %}
+
+        <!-- List of event sessions -->
+        <ul class="list-group mt-3">
+            {% for session in event_sessions %}
+            <li class="list-group-item">
+                {{ session.start_time|time:"H:i" }} : {{ session.end_time|time:"H:i"}} - {{session.title }}
+                {% if user.is_authenticated and user == event.creator %}
+                <a href="{% url 'edit_session_item' event_id=event.id session_id=session.id %}">Edit
+                    Session Item</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'event_list' %}" class="btn btn-secondary mt-4">Back to Events</a>
+    </div>
+
+    {% endblock %}

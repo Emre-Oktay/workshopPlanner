@@ -28,7 +28,7 @@ class Event(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.TextField()
-    date = models.DateTimeField()
+    date = models.DateField()
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, related_name='events')
     creator = models.ForeignKey(
@@ -59,7 +59,8 @@ class Event(models.Model):
 
 
 class EventSessionItem(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, on_delete=models.CASCADE, related_name='sessions')
     start_time = models.TimeField()
     end_time = models.TimeField()
     title = models.CharField(max_length=255)
