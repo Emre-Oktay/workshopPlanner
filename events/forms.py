@@ -5,10 +5,18 @@ from .models import Event, Tag, Location
 class LocationForm(forms.ModelForm):
     class Meta:
         model = Location
-        fields = ['city', 'street', 'building_number', 'floor']
+        fields = ['city', 'district', 'street', 'building_number', 'floor']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs.update(
+                {'class': 'form-control'})
 
 
 class EventForm(forms.ModelForm):
+    location = forms.ModelChoiceField(queryset=Location.objects.all())
+
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
@@ -27,17 +35,17 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = ['title', 'description', 'date',
                   'location', 'category', 'tags']
-        # widgets = {
-        #     'title': forms.TextInput(attrs={'class': 'form-control'}),
-        #     'description': forms.Textarea(attrs={'class': 'form-control'}),
-        #     'date': forms.DateTimeInput(attrs={'class': 'form-control'}),
-        #     'location': forms.TextInput(attrs={'class': 'form-control'}),
-        #     'category': forms.Select(attrs={'class': 'form-control'}),
-        # }
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'date': forms.DateTimeInput(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
-        tags = cleaned_data.get('tags', [])
+        tags = list(cleaned_data.get('tags', []))  # Convert to list
         new_tags = cleaned_data.get('new_tags', '')
 
         # Combine existing tags and new tags

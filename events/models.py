@@ -6,12 +6,13 @@ from users.models import User
 class Location(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     city = models.CharField(max_length=255)
+    district = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     building_number = models.CharField(max_length=255)
     floor = models.IntegerField(null=True)
 
     def __str__(self):
-        return f"{self.city}, {self.country}"
+        return f"{self.city}, {self.district}"
 
 
 class Event(models.Model):

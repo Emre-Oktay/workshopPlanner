@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from .models import Event
-from .forms import EventForm
+from .models import Event, Location
+from .forms import EventForm, LocationForm
 
 
 def event_list(request):
@@ -27,6 +27,20 @@ def create_event(request):
         form = EventForm()
 
     return render(request, 'events/create_event.html', {'form': form})
+
+
+def create_location(request):
+    if request.method == 'POST':
+        location_form = LocationForm(request.POST)
+        if location_form.is_valid():
+            location = location_form.save(commit=False)
+            location.user = request.user
+            location.save()
+            return redirect('create_event')
+    else:
+        location_form = LocationForm()
+
+    return render(request, 'events/create_location.html', {'location_form': location_form})
 
 
 def edit_event(request, event_id):

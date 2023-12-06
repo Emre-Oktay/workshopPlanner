@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Location{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Create Location</h2>
+    <form method="post" class="form-group">
+        {% csrf_token %}
+
+        {% for field in location_form %}
+        <div class="mb-3">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Create Location</button>
+    </form>
+</div>
+
+{% endblock %}
