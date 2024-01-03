@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
 from .models import Event, Location, EventSessionItem
-from .forms import EventForm, LocationForm, EventSessionForm
+from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
 
 
 def event_list(request):
@@ -79,28 +79,24 @@ def edit_session_item(request, event_id, session_id):
 def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
-    # Handle form submission for editing an event
+    if request.user != event.creator:
+        return redirect('event_detail', event_id=event_id)
+
     if request.method == 'POST':
-        # Process the form data (assuming you have a form for editing events)
-        # ...
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('event_detail', event_id=event_id)
+    else:
+        form = EventForm(instance=event)
 
-        # Redirect to the edited event's detail page
-        return redirect('event_detail', event_id=event.id)
-
-    # Render the form for editing the event
-    return render(request, 'events/edit_event.html', {'event': event})
+    return render(request, 'events/edit_event.html', {'form': form, 'event': event})
 
 
 def delete_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
-
-    # Handle form submission for deleting an event
     if request.method == 'POST':
-        # Delete the event
         event.delete()
-
-        # Redirect to the event list page or another appropriate page
         return redirect('event_list')
 
-    # Render the confirmation page for deleting the event
     return render(request, 'events/delete_event.html', {'event': event})

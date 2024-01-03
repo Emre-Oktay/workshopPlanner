@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Tag, Location, EventSessionItem
+from .models import Event, Tag, Location, EventSessionItem, EventImage
 
 
 class LocationForm(forms.ModelForm):
@@ -76,3 +76,9 @@ class EventSessionForm(forms.ModelForm):
             'start_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
             'end_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
         }
+
+
+class EventImageForm(forms.ModelForm):
+    class Meta:
+        model = EventImage
+        fields = ['image']

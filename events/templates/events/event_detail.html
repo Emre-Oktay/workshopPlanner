@@ -4,6 +4,9 @@
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
+        {% if user.is_authenticated and event.creator == user %}
+        <a href="{% url 'edit_event' event.id %}" class="btn btn-primary">Edit Event</a>
+        {% endif %}
         <h1 class="mb-4">{{ event.title }}</h1>
 
         <div class="card">
@@ -25,7 +28,6 @@
             </div>
         </div>
 
-        <!-- Check if the logged-in user is the creator of the event -->
         {% if user.is_authenticated and user == event.creator %}
         <a href="{% url 'create_session_item' event.id %}" class="btn btn-primary mt-4">Add Session</a>
         {% endif %}
