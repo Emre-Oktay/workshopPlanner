@@ -3,13 +3,15 @@
 {% block content %}
 
 <div class="row">
+
     <div class="col-md-8 offset-md-2">
+
+        <h1 class="mb-4">{{ event.title }}</h1>
         {% if user.is_authenticated and event.creator == user %}
         <a href="{% url 'edit_event' event.id %}" class="btn btn-primary">Edit Event</a>
+        <a href="{% url 'delete_event' event.id %}" class="btn btn-primary">Delete Event</a>
         {% endif %}
-        <h1 class="mb-4">{{ event.title }}</h1>
-
-        <div class="card">
+        <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Details</h5>
                 <p class="card-text"><strong>Description:</strong> {{ event.description }}</p>
@@ -35,7 +37,7 @@
         <!-- List of event sessions -->
         <ul class="list-group mt-3">
             {% for session in event_sessions %}
-            <li class="list-group-item">
+            <li class="list-group-item d-flex justify-content-between">
                 {{ session.start_time|time:"H:i" }} : {{ session.end_time|time:"H:i"}} - {{session.title }}
                 {% if user.is_authenticated and user == event.creator %}
                 <a href="{% url 'edit_session_item' event_id=event.id session_id=session.id %}">Edit
@@ -48,4 +50,5 @@
         <a href="{% url 'event_list' %}" class="btn btn-secondary mt-4">Back to Events</a>
     </div>
 
-    {% endblock %}
+</div>
+{% endblock %}

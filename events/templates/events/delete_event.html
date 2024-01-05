@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card mt-4 col-md-8 offset-md-2">
+    <div class="card-body">
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <p class="card-title text-center">Are you sure you want to delete "{{event}}"?</p>
+
+            <div class="mt-4 d-flex justify-content-evenly">
+                <a href="{% url 'event_detail' event.id %}">Go back</a>
+
+                <input class="btn btn-danger" type="submit" value="Delete" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
