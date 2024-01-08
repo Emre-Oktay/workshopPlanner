@@ -106,4 +106,4 @@ class EventImage(models.Model):
     event = models.ForeignKey(
         Event, on_delete=models.CASCADE, related_name='images')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='event_images/')
+    image = models.ImageField(upload_to='static/event_images/')

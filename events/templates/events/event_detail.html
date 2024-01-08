@@ -19,6 +19,11 @@
                 <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
                 <p class="card-text"><strong>Category:</strong> {{ event.category }}</p>
                 <p class="card-text"><strong>Status:</strong> {{ event.status }}</p>
+                <p class="card-text"><strong>Creators:</strong>
+                    <a href="{% url 'user' event.creator.id %}">
+                        {{event.creator.first_name }} {{event.creator.last_name }}
+                    </a>
+                </p>
 
                 <h5 class="card-title mt-4">Tags</h5>
                 <ul class="list-inline">
