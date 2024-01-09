@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import RegistrationForm
 from .models import User
+from events.models import Event
 
 
 def register_view(request):
@@ -38,4 +39,5 @@ def logout_view(request):
 
 def user_view(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-    return render(request, 'users/user_profile.html', {'user': user})
+    events = Event.objects.filter(creator=user)
+    return render(request, 'users/user_profile.html', {'user': user, 'events': events})
