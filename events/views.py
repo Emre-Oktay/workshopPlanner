@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import Event, Location, EventSessionItem
 from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
@@ -17,6 +18,7 @@ def event_detail(request, event_id):
     return render(request, 'events/event_detail.html', context)
 
 
+@login_required(login_url='accounts/login')
 def create_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
@@ -31,6 +33,7 @@ def create_event(request):
     return render(request, 'events/create_event.html', {'form': form})
 
 
+@login_required(login_url='accounts/login')
 def create_location(request):
     if request.method == 'POST':
         location_form = LocationForm(request.POST)
@@ -45,6 +48,7 @@ def create_location(request):
     return render(request, 'events/create_location.html', {'location_form': location_form})
 
 
+@login_required(login_url='accounts/login')
 def create_session_item(request, event_id):
     event = Event.objects.get(pk=event_id)
     if request.method == 'POST':
@@ -59,6 +63,7 @@ def create_session_item(request, event_id):
     return render(request, 'events/create_session.html', {'form': form, 'event': event})
 
 
+@login_required(login_url='accounts/login')
 def edit_session_item(request, event_id, session_id):
     event_session = get_object_or_404(EventSessionItem, id=session_id)
 
@@ -76,6 +81,7 @@ def edit_session_item(request, event_id, session_id):
     return render(request, 'events/edit_session.html', {'form': form, 'event_session': event_session})
 
 
+@login_required(login_url='accounts/login')
 def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
@@ -93,6 +99,7 @@ def edit_event(request, event_id):
     return render(request, 'events/edit_event.html', {'form': form, 'event': event})
 
 
+@login_required(login_url='accounts/login')
 def delete_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':

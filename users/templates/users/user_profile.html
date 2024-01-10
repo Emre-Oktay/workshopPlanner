@@ -10,8 +10,14 @@
         </div>
         <div class="text-center">
             <h5 class="mt-2">{{user.first_name}} {{user.last_name}}</h5>
-            <p>@{{user.username}}</p>
-            About
+            <div>
+                <p class="mb-0">@{{user.username}}</p>
+                {% if request.user == user %}
+                <a class="mt-0" href="{% url 'update-user' %}">Update Profile</a>
+                {% endif %}
+            </div>
+
+            <p class="mt-2">About</p>
             <div class="px-4 mt-1">
                 {{user.bio}}
             </div>

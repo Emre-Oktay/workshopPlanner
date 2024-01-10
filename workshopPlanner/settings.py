@@ -101,8 +101,8 @@ TEMPLATES = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '123',
-            'secret': '456',
+            'client_id': '812204687587-mpvfefvtgb8bdq5k7gnlcu57eietmn9t.apps.googleusercontent.com',
+            'secret': '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',
             'key': ''
         }
     },
@@ -113,6 +113,10 @@ SOCIALACCOUNT_PROVIDERS = {
             'key': ''
         }
     }
+}
+
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.RegistrationForm',
 }
 
 LOGIN_REDIRECT_URL = '/'

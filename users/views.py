@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .forms import RegistrationForm
+from django.contrib.auth.decorators import login_required
+from .forms import RegistrationForm, UpdateUserForm
 from .models import User
 from events.models import Event
 
@@ -41,3 +42,17 @@ def user_view(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     events = Event.objects.filter(creator=user)
     return render(request, 'users/user_profile.html', {'user': user, 'events': events})
+
+
+@login_required(login_url='accounts/login')
+def update_user_view(request):
+    user = request.user
+    form = UpdateUserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UpdateUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user', user_id=user.id)
+
+    return render(request, 'users/update_user_profile.html', {'form': form})
