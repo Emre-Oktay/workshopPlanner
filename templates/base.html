@@ -15,7 +15,7 @@
     </style>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <header class="p-3 text-bg-dark bg-secondary">
         <div class="container">
@@ -63,12 +63,12 @@
         </div>
     </header>
 
-    <main class="container mt-4 mb-4">
+    <main class="flex-shrink-0 container mt-4 mb-4">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-secondary text-white text-center py-3 ">
-        &copy; 2023 Workshop planner
+    <footer class="footer mt-auto bg-secondary text-white text-center py-3">
+        &copy; 2024 Workshop planner
     </footer>
 
 
