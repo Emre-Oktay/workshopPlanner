@@ -107,3 +107,11 @@ class EventImage(models.Model):
         Event, on_delete=models.CASCADE, related_name='images')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='static/event_images/')
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['user', 'event']

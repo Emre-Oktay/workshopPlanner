@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import Event, Location, EventSessionItem, Comment
+from .models import Event, Location, EventSessionItem, Comment, Bookmark
 from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
 
 
@@ -134,3 +134,33 @@ def delete_comment(request, comment_id):
         return redirect('event_detail', comment.event.id)
 
     return render(request, 'events/delete_comment.html', {'comment': comment})
+
+
+@login_required(login_url='accounts/login')
+def register_to_event(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    if request.user not in event.participants.all():
+        event.participants.add(request.user)
+
+    return redirect('event_detail', event_id=event.id)
+
+
+@login_required(login_url='accounts/login')
+def bookmark_event(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+
+    bookmark, created = Bookmark.objects.get_or_create(
+        user=request.user, event=event)
+
+    if not created:
+        # If the bookmark already exists, remove it
+        bookmark.delete()
+
+    return redirect('event_detail', event_id=event.id)
+
+
+@login_required(login_url='accounts/login')
+def bookmarked_events(request):
+    bookmarks = Bookmark.objects.filter(user=request.user)
+    return render(request, 'events/bookmarked_events.html', {'bookmarks': bookmarks})

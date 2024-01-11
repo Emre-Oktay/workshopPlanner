@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Bookmarked Events</h2>
+{% if bookmarks %}
+<ul>
+    {% for bookmark in bookmarks %}
+    <li><a href="{% url 'event_detail' event_id=bookmark.event.id %}">{{ bookmark.event.title }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You haven't bookmarked any events yet.</p>
+{% endif %}
+{% endblock %}

@@ -46,7 +46,7 @@
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="{% url 'user' request.user.id %}">Profile</a></li>
                         <li><a class="dropdown-item" href="{% url 'update-user' %}">Update Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Bookmarks</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bookmarked_events' %}">Bookmarks</a></li>
                         <li><a class="dropdown-item" href="#">Registered Events</a></li>
                         <li>
                             <hr class="dropdown-divider">

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Event, Location, EventSessionItem, Tag, Category, Invitation, Comment
+from .models import Event, Location, EventSessionItem, Tag, Category, Invitation, Comment, Bookmark
 
 admin.site.register(Location)
 admin.site.register(Event)
@@ -9,3 +9,4 @@ admin.site.register(Tag)
 admin.site.register(Category)
 admin.site.register(Invitation)
 admin.site.register(Comment)
+admin.site.register(Bookmark)
