@@ -1,8 +1,9 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from .models import Event, Location, EventSessionItem
+from .models import Event, Location, EventSessionItem, Comment
 from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
 
 
@@ -14,7 +15,19 @@ def event_list(request):
 def event_detail(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     event_sessions = event.sessions.filter(event=event).order_by('start_time')
-    context = {'event': event, 'event_sessions': event_sessions}
+    comments = event.comment_set.all().order_by('-created_at')
+    participants = event.participants.all()
+
+    if request.method == 'POST':
+        comment = Comment.objects.create(
+            user=request.user,
+            event=event,
+            text=request.POST.get('comment')
+        )
+        return redirect('event_detail', event_id=event.id)
+
+    context = {'event': event, 'event_sessions': event_sessions,
+               'comments': comments, 'participants': participants}
     return render(request, 'events/event_detail.html', context)
 
 
@@ -107,3 +120,17 @@ def delete_event(request, event_id):
         return redirect('event_list')
 
     return render(request, 'events/delete_event.html', {'event': event})
+
+
+@login_required(login_url='accounts/login')
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    if request.user != comment.user:
+        return HttpResponse('You are not allowed to remove this comment')
+
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('event_detail', comment.event.id)
+
+    return render(request, 'events/delete_comment.html', {'comment': comment})

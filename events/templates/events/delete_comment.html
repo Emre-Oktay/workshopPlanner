@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card mt-4 col-md-8 offset-md-2">
+    <div class="card-body">
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <p class="card-title text-center">Are you sure you want to delete this comment?</p>
+            <ul class="list-group my-4">
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between mb-3">
+                        <small>@{{comment.user}} - {{comment.created_at|timesince}} ago</small>
+                    </div>
+                    <hr>
+                    <p>{{comment.text}}</p>
+                </li>
+            </ul>
+            <div class="mt-4 d-flex justify-content-evenly">
+                <a href="{% url 'event_detail' comment.event.id %}">Go back</a>
+
+                <input class="btn btn-danger" type="submit" value="Delete" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

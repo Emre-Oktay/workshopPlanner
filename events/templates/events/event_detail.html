@@ -13,7 +13,7 @@
         {% endif %}
         <div class="card mt-4">
             <div class="card-body">
-                <h5 class="card-title">Details</h5>
+                <h4 class="card-title">Details</h4>
                 <p class="card-text"><strong>Description:</strong> {{ event.description }}</p>
                 <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
                 <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
@@ -35,11 +35,10 @@
             </div>
         </div>
 
+        <h5 class="mt-4">Event Schedule</h5>
         {% if user.is_authenticated and user == event.creator %}
-        <a href="{% url 'create_session_item' event.id %}" class="btn btn-primary mt-4">Add Session</a>
+        <a href="{% url 'create_session_item' event.id %}" class="btn btn-primary mt-1">Add Session</a>
         {% endif %}
-
-        <!-- List of event sessions -->
         <ul class="list-group mt-3">
             {% for session in event_sessions %}
             <li class="list-group-item d-flex justify-content-between">
@@ -51,6 +50,38 @@
             </li>
             {% endfor %}
         </ul>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Comments</h5>
+                <ul class="list-group mt-3">
+                    {% for comment in comments %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between mb-3">
+                            <small>@{{comment.user}} - {{comment.created_at|timesince}} ago</small>
+                            {% if user.is_authenticated and request.user == comment.user %}
+                            <a href="{% url 'delete_comment' comment.id %}">Delete Comment</a>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <p>{{comment.text}}</p>
+                    </li>
+                    {% endfor %}
+                    {% if request.user.is_authenticated %}
+                    <li class="list-group-item">
+                        <div>
+                            <form class="d-flex justify-content-between mb-3" method="POST" action="">
+                                {% csrf_token %}
+                                <input class="form-control" type="text" name="comment"
+                                    placeholder="Write your comment here..." />
+                                <button class="btn btn-primary">Send</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
 
         <a href="{% url 'event_list' %}" class="btn btn-secondary mt-4">Back to Events</a>
     </div>
