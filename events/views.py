@@ -7,6 +7,11 @@ from .models import Event, Location, EventSessionItem, Comment, Bookmark
 from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
 
 
+def home(request):
+    events = Event.objects.all()[:3]
+    return render(request, 'events/home.html', {'events': events})
+
+
 def event_list(request):
     events = Event.objects.all()
     return render(request, 'events/event_list.html', {'events': events})
