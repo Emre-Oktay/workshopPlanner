@@ -2,8 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
-from .models import Event, Location, EventSessionItem, Comment, Bookmark
+from .models import Event, Location, EventSessionItem, Comment, Bookmark, Category, Tag
 from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
 
 
@@ -13,8 +14,18 @@ def home(request):
 
 
 def event_list(request):
-    events = Event.objects.all()
-    return render(request, 'events/event_list.html', {'events': events})
+    q = request.GET.get('q', '')
+    events = Event.objects.filter(
+        Q(tags__name__icontains=q) |
+        Q(category__name__icontains=q) |
+        Q(title__icontains=q)
+    ).distinct()
+    event_count = events.count()
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+    context = {'events': events, 'categories': categories,
+               'tags': tags, 'event_count': event_count}
+    return render(request, 'events/event_list.html', context)
 
 
 def event_detail(request, event_id):
