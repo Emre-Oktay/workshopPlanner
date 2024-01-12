@@ -15,16 +15,20 @@ def home(request):
 
 def event_list(request):
     q = request.GET.get('q', '')
+    category_filter = request.GET.get('category', '')
     events = Event.objects.filter(
         Q(tags__name__icontains=q) |
         Q(category__name__icontains=q) |
         Q(title__icontains=q)
     ).distinct()
+    if category_filter:
+        events = events.filter(category__name__icontains=category_filter)
     event_count = events.count()
     categories = Category.objects.all()
     tags = Tag.objects.all()
+    active_category = category_filter
     context = {'events': events, 'categories': categories,
-               'tags': tags, 'event_count': event_count}
+               'tags': tags, 'event_count': event_count, 'active_category': active_category}
     return render(request, 'events/event_list.html', context)
 
 

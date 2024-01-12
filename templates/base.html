@@ -20,7 +20,7 @@
     <header class="p-3 text-bg-dark bg-secondary">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="{% url 'event_list' %}"
+                <a href="{% url 'home' %}"
                     class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                     <span class="fs-4">Workshop Planner</span>
                 </a>
@@ -32,9 +32,10 @@
                     <li><a href="#" class="nav-link px-2 text-white">About</a></li>
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="GET"
+                    action="{% url 'event_list' %}">
                     <input type="search" class="form-control form-control-dark text-bg-dark bg-secondary"
-                        placeholder="Search..." aria-label="Search">
+                        placeholder="Search..." aria-label="Search" name="q">
                 </form>
                 {% if request.user.is_authenticated %}
                 <div class="dropdown text-end">

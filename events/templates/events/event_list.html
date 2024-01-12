@@ -9,18 +9,40 @@
 <div class="card my-4">
     <div class="card-item mx-4 my-4">
         <h4>Search events</h4>
-        <li class="list-group-item">
-            <div>
-                <form class="d-flex justify-content-between" method="GET" action="{% url 'event_list' %}">
-                    <input class="form-control" type="text" name="q" placeholder="Search Events..." />
-                    <button class="btn btn-primary">Search</button>
-                </form>
-            </div>
-        </li>
+
+        <div>
+            <form class="justify-content-between" method="GET" action="{% url 'event_list' %}">
+                <input class="form-control" type="text" name="q" placeholder="Search Events..." />
+                <div class="my-4 row d-flex justify-content-around align-items-center">
+                    <div class="col-12 col-md-2">
+                        {% if active_category == '' %}
+                        <input type="radio" name="category" value="" checked>
+                        {% else %}
+                        <input type="radio" name="category" value="">
+                        {% endif %}
+                        <label>All Categories</label>
+                    </div>
+                    {% for category in categories %}
+                    <div class="col-12 col-md-2">
+                        {% if category.name == active_category %}
+                        <input type="radio" name="category" value="{{ category.name }}" checked>
+                        {% else %}
+                        <input type="radio" name="category" value="{{ category.name }}">
+                        {% endif %}
+                        <label>{{ category.name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+
         <div class="mt-4">
             <h5>Categories</h5>
             {% for category in categories %}
-            <a href="{% url 'event_list' %}?q={{category.name}}">{{category}}</a>
+            <a href="{% url 'event_list' %}?category={{category.name}}">{{category}}</a>
             {% endfor %}
         </div>
         <div class="mt-4">
