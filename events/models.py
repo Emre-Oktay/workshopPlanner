@@ -67,7 +67,7 @@ class EventSessionItem(models.Model):
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.start_time} - {self.title}"
+        return f"{self.start_time} - {self.end_time} - {self.title}"
 
 
 class Tag(models.Model):

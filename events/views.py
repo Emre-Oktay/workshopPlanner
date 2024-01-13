@@ -39,11 +39,13 @@ def event_detail(request, event_id):
     participants = event.participants.all()
 
     if request.method == 'POST':
-        comment = Comment.objects.create(
-            user=request.user,
-            event=event,
-            text=request.POST.get('comment')
-        )
+        comment_text = request.POST.get('comment')
+        if comment_text:
+            comment = Comment.objects.create(
+                user=request.user,
+                event=event,
+                text=comment_text
+            )
         return redirect('event_detail', event_id=event.id)
 
     context = {'event': event, 'event_sessions': event_sessions,
