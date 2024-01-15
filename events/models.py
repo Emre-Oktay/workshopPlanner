@@ -53,6 +53,7 @@ class Event(models.Model):
         'Comment', related_name='event_comments', blank=True)
     schedule_items = models.ManyToManyField(
         'EventSessionItem', related_name='event_schedule', blank=True)
+    main_image = models.ImageField(upload_to='event_images/', blank=True)
 
     def __str__(self):
         return self.title
@@ -109,7 +110,7 @@ class EventImage(models.Model):
     event = models.ForeignKey(
         Event, on_delete=models.CASCADE, related_name='images')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='static/event_images/')
+    image = models.ImageField(upload_to='event_images/')
 
 
 class Bookmark(models.Model):

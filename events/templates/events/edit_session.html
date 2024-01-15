@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Edit Session</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class="d-flex justify-content-center">
+    <div class="text-center mt-4 card w-50">
+        <div class="card-item my-4 mx-4">
+            <h2>Edit Session</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
 
-    <button class="btn btn-secondary" type="submit">Save Changes</button>
-</form>
+                <button class="btn btn-secondary" type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

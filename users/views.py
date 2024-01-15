@@ -41,7 +41,8 @@ def logout_view(request):
 def user_view(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     events = Event.objects.filter(creator=user)
-    return render(request, 'users/user_profile.html', {'user': user, 'events': events})
+    registered_events = Event.objects.filter(participants=user)
+    return render(request, 'users/user_profile.html', {'user': user, 'events': events, 'registered_events': registered_events})
 
 
 @login_required(login_url='accounts/login')

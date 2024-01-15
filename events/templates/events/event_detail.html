@@ -7,6 +7,14 @@
     <div class="col-md-8 offset-md-1">
 
         <h1 class="mb-4">{{ event.title }}</h1>
+
+        {% if event.main_image %}
+        <div class="my-4">
+            <img src="{{ event.main_image.url }}" class="d-block mx-lg-auto img-fluid" alt="Illustration" width="700"
+                height="500">
+        </div>
+        {% endif %}
+
         {% if user.is_authenticated and event.creator == user %}
         <a href="{% url 'edit_event' event.id %}" class="btn btn-primary">Edit Event</a>
         <a href="{% url 'delete_event' event.id %}" class="btn btn-primary">Delete Event</a>
@@ -14,7 +22,7 @@
         <div class="card mt-4">
             <div class="card-body">
                 <h4 class="card-title">Details</h4>
-                <p class="card-text"><strong>Description:</strong> {{ event.description }}</p>
+                <p class="card-text"><strong>Description:</strong> {{ event.description|linebreaks }}</p>
                 <p class="card-text"><strong>Date:</strong> {{ event.date }}</p>
                 <p class="card-text"><strong>Location:</strong> {{ event.location }}</p>
                 <p class="card-text"><strong>Category:</strong> {{ event.category }}</p>

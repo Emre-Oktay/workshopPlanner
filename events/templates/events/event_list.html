@@ -12,7 +12,8 @@
 
         <div>
             <form class="justify-content-between" method="GET" action="{% url 'event_list' %}">
-                <input class="form-control" type="text" name="q" placeholder="Search Events..." />
+                <input class="form-control" type="text" name="q" placeholder="Search Events..." {% if request.GET.q %}
+                    value="{{request.GET.q}}" {% endif %} />
                 <div class="my-4 row d-flex justify-content-around align-items-center">
                     <div class="col-12 col-md-2">
                         {% if active_category == '' %}
@@ -61,10 +62,10 @@
     {% endif %}
 </div>
 <div class="container">
-    <div class="row">
-        {% for event in events %}
-        <div class="col-md-4">
-            <div class="card mb-4 box-shadow">
+    <div class="row" id="events">
+        {% for event in event_page %}
+        <div class="col-md-4" id="event">
+            <div class="card mb-4 box-shadow event">
                 <img class="card-img-top"
                     data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
                     alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;"
@@ -86,9 +87,32 @@
                     </div>
                 </div>
             </div>
+            {% if event_page.has_next and forloop.last %}
+            <span
+                hx-get="{% url 'event_list' %}?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ event_page.next_page_number }}"
+                hx-swap="beforeend" hx-target="#events" hx-select="#event" hx-trigger="revealed">
+            </span>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
+    <!-- <div class="text-center">
+        {% if event_page.has_previous %}
+        <a href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page=1">&laquo First</a>
+        <a href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ event_page.previous_page_number }}">
+            Previous
+        </a>
+        {% endif %}
+        Page {{event_page.number}}
+        {% if event_page.has_next %}
+        <a href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ event_page.next_page_number }}">
+            Next
+        </a>
+        <a href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{event_page.paginator.num_pages}}">
+            Last &raquo
+        </a>
+        {% endif %}
+    </div> -->
 </div>
 
 

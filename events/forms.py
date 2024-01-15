@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Tag, Location, EventSessionItem, EventImage
+from .models import Event, Invitation, Tag, Location, EventSessionItem, EventImage
 
 
 class LocationForm(forms.ModelForm):
@@ -34,7 +34,7 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ['title', 'description', 'date',
-                  'location', 'category', 'tags']
+                  'location', 'category', 'tags', 'main_image']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
@@ -82,3 +82,9 @@ class EventImageForm(forms.ModelForm):
     class Meta:
         model = EventImage
         fields = ['image']
+
+
+class InvitationForm(forms.ModelForm):
+    class Meta:
+        model = Invitation
+        fields = ['user']

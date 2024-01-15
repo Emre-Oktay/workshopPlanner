@@ -3,9 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator
 
-from .models import Event, Location, EventSessionItem, Comment, Bookmark, Category, Tag
-from .forms import EventForm, EventImageForm, LocationForm, EventSessionForm
+from .models import Event, Invitation, Location, EventSessionItem, Comment, Bookmark, Category, Tag
+from .forms import EventForm, EventImageForm, InvitationForm, LocationForm, EventSessionForm
 
 
 def home(request):
@@ -27,8 +28,14 @@ def event_list(request):
     categories = Category.objects.all()
     tags = Tag.objects.all()
     active_category = category_filter
+
+    p = Paginator(events, 6)
+    page = request.GET.get('page')
+    event_page = p.get_page(page)
+
     context = {'events': events, 'categories': categories,
-               'tags': tags, 'event_count': event_count, 'active_category': active_category}
+               'tags': tags, 'event_count': event_count,
+               'active_category': active_category, 'event_page': event_page}
     return render(request, 'events/event_list.html', context)
 
 
@@ -169,6 +176,12 @@ def register_to_event(request, event_id):
 
 
 @login_required(login_url='accounts/login')
+def registered_events(request):
+    events = Event.objects.filter(participants=request.user)
+    return render(request, 'events/registered_events.html', {'events': events})
+
+
+@login_required(login_url='accounts/login')
 def bookmark_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
@@ -186,3 +199,25 @@ def bookmark_event(request, event_id):
 def bookmarked_events(request):
     bookmarks = Bookmark.objects.filter(user=request.user)
     return render(request, 'events/bookmarked_events.html', {'bookmarks': bookmarks})
+
+
+@login_required(login_url='accounts/login')
+def invite_to_event(request, event_id):
+    if request.method == 'POST':
+        form = InvitationForm(request.POST)
+        event = Event.objects.get(pk=event_id)
+        if form.is_valid():
+            invitation = form.save(commit=False)
+            invitation.event = event
+            invitation.invited_by = request.user
+            invitation.save()
+            return redirect('event_detail', event_id=event.id)
+
+    form = InvitationForm()
+    return render(request, 'events/invite_to_event.html', {'form': form})
+
+
+@login_required(login_url='accounts/login')
+def invitation_list(request):
+    invitations = Invitation.objects.filter(user=request.user)
+    return render(request, 'events/invitation_list.html', {'invitations': invitations})
