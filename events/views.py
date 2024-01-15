@@ -63,7 +63,7 @@ def event_detail(request, event_id):
 @login_required(login_url='accounts/login')
 def create_event(request):
     if request.method == 'POST':
-        form = EventForm(request.POST)
+        form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             new_event = form.save(commit=False)
             new_event.creator = request.user
@@ -131,7 +131,7 @@ def edit_event(request, event_id):
         return redirect('event_detail', event_id=event_id)
 
     if request.method == 'POST':
-        form = EventForm(request.POST, instance=event)
+        form = EventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
             form.save()
             return redirect('event_detail', event_id=event_id)
