@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,15 +102,15 @@ TEMPLATES = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '812204687587-mpvfefvtgb8bdq5k7gnlcu57eietmn9t.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': config('SOCIALACCOUNT_PROVIDERS_GOOGLE_CLIENT_ID'),
+            'secret': config('SOCIALACCOUNT_PROVIDERS_GOOGLE_SECRET'),
             'key': ''
         }
     },
     'github': {
         'APP': {
-            'client_id': '55b3ef8d7b8e06bc5382',
-            'secret': '0578194cede56d146a179f86871754c7176ddb97',
+            'client_id': config('SOCIALACCOUNT_PROVIDERS_GITHUB_CLIENT_ID'),
+            'secret': config('SOCIALACCOUNT_PROVIDERS_GITHUB_SECRET'),
             'key': ''
         }
     }
