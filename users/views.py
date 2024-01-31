@@ -12,8 +12,8 @@ def register_view(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('events')
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('event_list')
     else:
         form = RegistrationForm()
 
@@ -25,7 +25,7 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('event_list')
     else:
         form = AuthenticationForm()
@@ -45,7 +45,7 @@ def user_view(request, user_id):
     return render(request, 'users/user_profile.html', {'user': user, 'events': events, 'registered_events': registered_events})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def update_user_view(request):
     user = request.user
     form = UpdateUserForm(instance=user)

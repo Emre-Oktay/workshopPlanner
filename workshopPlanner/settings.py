@@ -53,6 +53,8 @@ INSTALLED_APPS = [
 
     "debug_toolbar",
 
+    'widget_tweaks',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -115,6 +117,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 ACCOUNT_FORMS = {
     'signup': 'users.forms.RegistrationForm',

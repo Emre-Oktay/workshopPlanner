@@ -60,7 +60,7 @@ def event_detail(request, event_id):
     return render(request, 'events/event_detail.html', context)
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def create_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
@@ -75,7 +75,7 @@ def create_event(request):
     return render(request, 'events/create_event.html', {'form': form})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def create_location(request):
     if request.method == 'POST':
         location_form = LocationForm(request.POST)
@@ -90,7 +90,7 @@ def create_location(request):
     return render(request, 'events/create_location.html', {'location_form': location_form})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def create_session_item(request, event_id):
     event = Event.objects.get(pk=event_id)
     if request.method == 'POST':
@@ -105,7 +105,7 @@ def create_session_item(request, event_id):
     return render(request, 'events/create_session.html', {'form': form, 'event': event})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def edit_session_item(request, event_id, session_id):
     event_session = get_object_or_404(EventSessionItem, id=session_id)
 
@@ -123,7 +123,7 @@ def edit_session_item(request, event_id, session_id):
     return render(request, 'events/edit_session.html', {'form': form, 'event_session': event_session})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def edit_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
@@ -141,7 +141,7 @@ def edit_event(request, event_id):
     return render(request, 'events/edit_event.html', {'form': form, 'event': event})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def delete_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
     if request.method == 'POST':
@@ -151,7 +151,7 @@ def delete_event(request, event_id):
     return render(request, 'events/delete_event.html', {'event': event})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
 
@@ -165,7 +165,7 @@ def delete_comment(request, comment_id):
     return render(request, 'events/delete_comment.html', {'comment': comment})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def register_to_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
@@ -175,13 +175,13 @@ def register_to_event(request, event_id):
     return redirect('event_detail', event_id=event.id)
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def registered_events(request):
     events = Event.objects.filter(participants=request.user)
     return render(request, 'events/registered_events.html', {'events': events})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def bookmark_event(request, event_id):
     event = get_object_or_404(Event, pk=event_id)
 
@@ -195,13 +195,13 @@ def bookmark_event(request, event_id):
     return redirect('event_detail', event_id=event.id)
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def bookmarked_events(request):
     bookmarks = Bookmark.objects.filter(user=request.user)
     return render(request, 'events/bookmarked_events.html', {'bookmarks': bookmarks})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def invite_to_event(request, event_id):
     if request.method == 'POST':
         form = InvitationForm(request.POST)
@@ -217,7 +217,7 @@ def invite_to_event(request, event_id):
     return render(request, 'events/invite_to_event.html', {'form': form})
 
 
-@login_required(login_url='accounts/login')
+@login_required(login_url='login')
 def invitation_list(request):
     invitations = Invitation.objects.filter(user=request.user)
     return render(request, 'events/invitation_list.html', {'invitations': invitations})
